@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies/data/api_manager.dart';
 import 'package:movies/screens/initial_screen/tabs/browse/browse_tab.dart';
 import 'package:movies/screens/initial_screen/tabs/home/home_tab.dart';
 import 'package:movies/screens/initial_screen/tabs/search/search_tab.dart';
@@ -19,6 +20,7 @@ class _InitialScreenState extends State<InitialScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ApiManager.getLatest();
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
@@ -44,26 +46,23 @@ class _InitialScreenState extends State<InitialScreen> {
         showSelectedLabels: true,
         //selectedFontSize: 15,
         //unselectedFontSize: 15,
-        selectedLabelStyle: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.bold
-        ),
+        selectedLabelStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         unselectedLabelStyle: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold
         ),
         //landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
-        items: [
+        items: const [
           BottomNavigationBarItem(
               label: "HOME",
-              icon: const ImageIcon(AssetImage("assets/home_icon.png"))),
-          const BottomNavigationBarItem(
+              icon: ImageIcon(AssetImage("assets/home_icon.png"))),
+          BottomNavigationBarItem(
               label: "SEARCH",
               icon: ImageIcon(AssetImage("assets/search_icon.png"))),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
               label: "BROWSE",
               icon: ImageIcon(AssetImage("assets/browse_icon.png"))),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
               label: "WATCHLIST",
               icon: ImageIcon(AssetImage("assets/watchlist_icon.png")))
         ],
