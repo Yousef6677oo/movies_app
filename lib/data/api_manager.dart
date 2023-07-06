@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../model/DetailsDM.dart';
-import '../model/GenreDM.dart';
-import '../model/LatestDM.dart';
-import '../model/PopularDM.dart';
-import '../model/SearchDM.dart';
-import '../model/SimilarDM.dart';
-import '../model/TopRatedDM.dart';
+import '../model/DetailsResponseDM.dart';
+import '../model/GenreResponseDM.dart';
+import '../model/LatestResponseDM.dart';
+import '../model/PopularResponseDM.dart';
+import '../model/SearchResponseDM.dart';
+import '../model/SimilarResponseDM.dart';
+import '../model/TopRatedResponseDM.dart';
 
 abstract class ApiManager {
   static String baseUrl = "api.themoviedb.org";
@@ -62,16 +62,11 @@ abstract class ApiManager {
     return responseDM;
   }
 
-
   static Future<LatestDM> getLatest() async {
     Uri url = Uri.https(baseUrl, '3/movie/latest', {"api_key": apiKey});
-    print("url: $url");
     http.Response response = await http.get(url);
-    print("response: $response");
     Map json = jsonDecode(response.body) as Map;
-    print("json: $json");
     LatestDM responseDM = LatestDM.fromJson(json);
-    print("responseDM: $responseDM");
     return responseDM;
   }
 }

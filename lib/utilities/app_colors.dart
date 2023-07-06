@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-abstract class AppColors{
+abstract class AppColors {
   static Color primaryColor = const Color(0xff121312);
   static Color accentColor = const Color(0xff707070);
   static Color unselectedTabColor = const Color(0xffB5B4B4);

@@ -1,30 +1,31 @@
 class LatestDM {
   LatestDM({
-      this.adult, 
-      this.backdropPath, 
-      this.belongsToCollection, 
-      this.budget, 
-      this.genres, 
-      this.homepage, 
-      this.id, 
-      this.imdbId, 
-      this.originalLanguage, 
-      this.originalTitle, 
-      this.overview, 
-      this.popularity, 
-      this.posterPath, 
-      this.productionCompanies, 
-      this.productionCountries, 
-      this.releaseDate, 
-      this.revenue, 
-      this.runtime, 
-      this.spokenLanguages, 
-      this.status, 
-      this.tagline, 
-      this.title, 
-      this.video, 
-      this.voteAverage, 
-      this.voteCount,});
+    this.adult,
+    this.backdropPath,
+    this.belongsToCollection,
+    this.budget,
+    this.genres,
+    this.homepage,
+    this.id,
+    this.imdbId,
+    this.originalLanguage,
+    this.originalTitle,
+    this.overview,
+    this.popularity,
+    this.posterPath,
+    this.productionCompanies,
+    this.productionCountries,
+    this.releaseDate,
+    this.revenue,
+    this.runtime,
+    this.spokenLanguages,
+    this.status,
+    this.tagline,
+    this.title,
+    this.video,
+    this.voteAverage,
+    this.voteCount,
+  });
 
   LatestDM.fromJson(dynamic json) {
     adult = json['adult'];
@@ -117,16 +118,19 @@ class LatestDM {
     map['popularity'] = popularity;
     map['poster_path'] = posterPath;
     if (productionCompanies != null) {
-      map['production_companies'] = productionCompanies?.map((v) => v.toJson()).toList();
+      map['production_companies'] =
+          productionCompanies?.map((v) => v.toJson()).toList();
     }
     if (productionCountries != null) {
-      map['production_countries'] = productionCountries?.map((v) => v.toJson()).toList();
+      map['production_countries'] =
+          productionCountries?.map((v) => v.toJson()).toList();
     }
     map['release_date'] = releaseDate;
     map['revenue'] = revenue;
     map['runtime'] = runtime;
     if (spokenLanguages != null) {
-      map['spoken_languages'] = spokenLanguages?.map((v) => v.toJson()).toList();
+      map['spoken_languages'] =
+          spokenLanguages?.map((v) => v.toJson()).toList();
     }
     map['status'] = status;
     map['tagline'] = tagline;
@@ -136,5 +140,4 @@ class LatestDM {
     map['vote_count'] = voteCount;
     return map;
   }
-
 }

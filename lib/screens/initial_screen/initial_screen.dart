@@ -24,6 +24,7 @@ class _InitialScreenState extends State<InitialScreen> {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
+        toolbarHeight: 5,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -34,23 +35,18 @@ class _InitialScreenState extends State<InitialScreen> {
         backgroundColor: AppColors.bottomNavigationBarItemColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
-        onTap: (index){
-          currentIndex=index;
-          setState(() {
-
-          });
+        onTap: (index) {
+          currentIndex = index;
+          setState(() {});
         },
         selectedItemColor: AppColors.selectedTabColor,
         unselectedItemColor: AppColors.unselectedTabColor,
         showUnselectedLabels: true,
         showSelectedLabels: true,
-        //selectedFontSize: 15,
-        //unselectedFontSize: 15,
-        selectedLabelStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        unselectedLabelStyle: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold
-        ),
+        selectedLabelStyle:
+            const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        unselectedLabelStyle:
+            const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         //landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
         items: const [
           BottomNavigationBarItem(
