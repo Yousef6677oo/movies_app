@@ -28,7 +28,7 @@ class _HomeTabState extends State<HomeTab> {
         children: [
           popularBuild(),
           newReleasesBuild(),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.015),
           recommendedBuild(),
         ],
       ),

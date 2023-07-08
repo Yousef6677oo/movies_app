@@ -14,7 +14,7 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
-  int currentIndex = 0;
+  int currentIndex = 1;
 
   List<Widget> tabs = [HomeTab(), SearchTab(), BrowseTab(), WatchlistTab()];
 
@@ -24,7 +24,7 @@ class _InitialScreenState extends State<InitialScreen> {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
-        toolbarHeight: 5,
+        toolbarHeight: 0,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
