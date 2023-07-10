@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies/data/api_manager.dart';
 import 'package:movies/screens/initial_screen/tabs/browse/browse_tab.dart';
 import 'package:movies/screens/initial_screen/tabs/home/home_tab.dart';
+import 'package:movies/screens/initial_screen/tabs/home/home_tab_screen.dart';
 import 'package:movies/screens/initial_screen/tabs/search/search_tab.dart';
 import 'package:movies/screens/initial_screen/tabs/watchlist/watchlist_tab.dart';
 import 'package:movies/utilities/app_colors.dart';
@@ -16,7 +17,7 @@ class InitialScreen extends StatefulWidget {
 class _InitialScreenState extends State<InitialScreen> {
   int currentIndex = 1;
 
-  List<Widget> tabs = [HomeTab(), SearchTab(), BrowseTab(), WatchlistTab()];
+  List<Widget> tabs = [HomeTabScreen(), SearchTab(), BrowseTab(), WatchlistTab()];
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,6 @@ class _InitialScreenState extends State<InitialScreen> {
             const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         unselectedLabelStyle:
             const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        //landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
         items: const [
           BottomNavigationBarItem(
               label: "HOME",

@@ -48,6 +48,11 @@ class _SearchTabState extends State<SearchTab> {
 
   Widget buildSearchTextField() {
     return TextField(
+      onSubmitted: (value) {
+        setState(() {
+
+        });
+      },
       controller: searchController,
       decoration: InputDecoration(
         filled: true,

@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
+import '../../../../model/PopularResponseDM.dart';
+import '../../../../model/popularDM.dart';
+
 class HomeTab extends StatefulWidget {
+  List<Result> listResult;
+  HomeTab(this.listResult);
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
+  List<PopularDataModel> popularData = [];
+  List<Stack> popularStack = [];
+  List<String> popImages = [
+    "assets/releases_1_test.png",
+    "assets/releases_2_test.png",
+    "assets/releases_3_test.png",
+    "assets/releases_4_test.png"
+  ];
   List<String> releasesImages = [
     "assets/releases_1_test.png",
     "assets/releases_2_test.png",
@@ -22,6 +35,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    mapPopular();
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -44,49 +58,7 @@ class _HomeTabState extends State<HomeTab> {
       indicatorBackgroundColor: Colors.transparent,
       autoPlayInterval: 5000,
       isLoop: true,
-      children: [
-        Stack(alignment: Alignment.topCenter, children: [
-          //todo: change image asset to url and get data from api
-          Image.asset("assets/home_test_image.png",
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.25),
-          Image.asset("assets/play_button.png",
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.24),
-          Align(
-            alignment: AlignmentDirectional.bottomStart,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              //todo: change image asset to url and get data from api
-              child: Image.asset(
-                "assets/poster_test_image.png",
-                width: MediaQuery.of(context).size.width * 0.37,
-                height: MediaQuery.of(context).size.height * 0.22,
-              ),
-            ),
-          ),
-          Positioned(
-              top: MediaQuery.of(context).size.height * 0.26,
-              right: MediaQuery.of(context).size.width * 0.03,
-              child: const Text(
-                "Dora and the lost city of gold",
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xffFFFFFF)),
-              )),
-          Positioned(
-              top: MediaQuery.of(context).size.height * 0.29,
-              right: MediaQuery.of(context).size.width * 0.37,
-              child: const Text(
-                "2019  PG-13",
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xffB5B4B4)),
-              ))
-        ])
-      ],
+      children: popularStack
     );
   }
 
@@ -235,4 +207,54 @@ class _HomeTabState extends State<HomeTab> {
       ),
     );
   }
+
+  mapPopular(){
+    popularData= widget.listResult.map((e) => PopularDataModel(
+      imageBack: e.backdropPath??"",
+      poster: e.posterPath??"",
+      title: e.title??"",
+    )).toList();
+    popularStack = popularData.map((e) => Stack(alignment: Alignment.topCenter, children: [
+      //todo: change image asset to url and get data from api
+      Image.network("https://image.tmdb.org/t/p/w500/${e.imageBack}",
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.25),
+      Image.asset("assets/play_button.png",
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.24),
+      Align(
+        alignment: AlignmentDirectional.bottomStart,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          //todo: change image asset to url and get data from api
+          child: Image.network(
+            "https://image.tmdb.org/t/p/w500/${e.poster}",
+            width: MediaQuery.of(context).size.width * 0.37,
+            height: MediaQuery.of(context).size.height * 0.22,
+          ),
+        ),
+      ),
+      Positioned(
+          top: MediaQuery.of(context).size.height * 0.26,
+          right: MediaQuery.of(context).size.width * 0.03,
+          child: Text(
+            e.title,
+            style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Color(0xffFFFFFF)),
+          )),
+      Positioned(
+          top: MediaQuery.of(context).size.height * 0.29,
+          right: MediaQuery.of(context).size.width * 0.37,
+          child: const Text(
+            "2019  PG-13",
+            style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: Color(0xffB5B4B4)),
+          ))
+    ])).toList();
+  }
+
 }
