@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies/data/api_manager.dart';
-import 'package:movies/screens/initial_screen/tabs/browse/browse_tab.dart';
-import 'package:movies/screens/initial_screen/tabs/home/home_tab.dart';
+import 'package:movies/screens/initial_screen/tabs/browse/browse_specific_category_tab_screen.dart';
+import 'package:movies/screens/initial_screen/tabs/browse/browse_tab_screen.dart';
 import 'package:movies/screens/initial_screen/tabs/home/home_tab_screen.dart';
-import 'package:movies/screens/initial_screen/tabs/search/search_tab.dart';
+import 'package:movies/screens/initial_screen/tabs/search/search_tab_screen.dart';
 import 'package:movies/screens/initial_screen/tabs/watchlist/watchlist_tab.dart';
 import 'package:movies/utilities/app_colors.dart';
 
@@ -15,13 +14,16 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
-  int currentIndex = 1;
+  int currentIndex = 0;
 
-  List<Widget> tabs = [HomeTabScreen(), SearchTab(), BrowseTab(), WatchlistTab()];
-
+  List<Widget> tabs = [
+    HomeTabScreen(),
+    SearchTabScreen(),
+    BrowseTabScreen(),
+    WatchlistTab(),
+  ];
   @override
   Widget build(BuildContext context) {
-    ApiManager.getLatest();
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(

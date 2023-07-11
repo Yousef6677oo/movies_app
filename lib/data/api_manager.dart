@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:movies/model/DiscoverResponseDM.dart';
 import '../model/DetailsResponseDM.dart';
 import '../model/GenreResponseDM.dart';
 import '../model/LatestResponseDM.dart';
@@ -12,11 +13,19 @@ abstract class ApiManager {
   static String baseUrl = "api.themoviedb.org";
   static String apiKey = "8cbd54442faeddc3454ec064b4eb3781";
 
-  static Future<PopularDM> getPopular() async {
-    Uri url = Uri.https(baseUrl, '3/movie/popular', {"api_key": apiKey});
+  static Future<PopularDM> getPopular(String endpoint) async {
+    Uri url = Uri.https(baseUrl, endpoint, {"api_key": apiKey});
     http.Response response = await http.get(url);
     Map json = jsonDecode(response.body) as Map;
     PopularDM responseDM = PopularDM.fromJson(json);
+    return responseDM;
+  }
+
+  static Future<LatestDM> getLatest() async {
+    Uri url = Uri.https(baseUrl, '3/movie/latest', {"api_key": apiKey});
+    http.Response response = await http.get(url);
+    Map json = jsonDecode(response.body) as Map;
+    LatestDM responseDM = LatestDM.fromJson(json);
     return responseDM;
   }
 
@@ -29,8 +38,7 @@ abstract class ApiManager {
   }
 
   static Future<SearchDM> getSearch(String query) async {
-    Uri url = Uri.https(
-        baseUrl, '3/search/movie', {"api_key": apiKey, "query": query});
+    Uri url = Uri.https(baseUrl, '3/search/movie', {"api_key": apiKey, "query": query});
     http.Response response = await http.get(url);
     Map json = jsonDecode(response.body) as Map;
     SearchDM responseDM = SearchDM.fromJson(json);
@@ -62,11 +70,11 @@ abstract class ApiManager {
     return responseDM;
   }
 
-  static Future<LatestDM> getLatest() async {
-    Uri url = Uri.https(baseUrl, '3/movie/latest', {"api_key": apiKey});
+  static Future<DiscoverDM> getDiscover(String genreID) async {
+    Uri url = Uri.https(baseUrl, '3/discover/movie', {"api_key": apiKey,"with_genres":"28"});
     http.Response response = await http.get(url);
     Map json = jsonDecode(response.body) as Map;
-    LatestDM responseDM = LatestDM.fromJson(json);
+    DiscoverDM responseDM = DiscoverDM.fromJson(json);
     return responseDM;
   }
 }

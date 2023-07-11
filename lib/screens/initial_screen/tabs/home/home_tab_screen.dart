@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../view_model/home_tab_view_model.dart';
 import 'home_tab.dart';
 
@@ -12,11 +13,15 @@ class HomeTabScreen extends StatelessWidget {
       body: BlocBuilder<HomeTapViewModel,HomeTabState>(
         bloc: homeTapViewModel,
         builder: (context, state) {
-          if(state is HomeTabLoadState){
-            return const Center(child: CircularProgressIndicator());
+          if (state is HomeTabLoadState) {
+            return const Center(
+                child: CircularProgressIndicator(
+              color: Color(0xffFFBB3B),
+            ));
           }
-          if(state is HomeTabSuccessState){
-            return HomeTab(state.resultList);
+          if (state is HomeTabSuccessState) {
+            return HomeTab(state.resultResponseList, state.releaseResponse,
+                state.recommendedResponseList);
           }
           return Container();
         },

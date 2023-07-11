@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/data/api_manager.dart';
+import 'package:movies/model/LatestResponseDM.dart';
 import 'package:movies/model/PopularResponseDM.dart';
 
 class HomeTapViewModel extends Cubit<HomeTabState> {
@@ -8,9 +9,17 @@ class HomeTapViewModel extends Cubit<HomeTabState> {
   }
 
   getAllMovies() async {
-    PopularDM response = await ApiManager.getPopular();
-    List<Result> resultList = response.results!;
-    emit(HomeTabSuccessState(resultList));
+    PopularDM popularResponse = await ApiManager.getPopular('3/movie/popular');
+    List<Result> resultResponseList = popularResponse.results!;
+
+    LatestDM releaseResponse = await ApiManager.getLatest();
+
+    PopularDM recommendedResponse =
+        await ApiManager.getPopular('3/movie/top_rated');
+    List<Result> recommendedResponseList = recommendedResponse.results!;
+
+    emit(HomeTabSuccessState(
+        resultResponseList, releaseResponse, recommendedResponseList));
   }
 }
 
@@ -21,6 +30,10 @@ class HomeTabLoadState extends HomeTabState {}
 class HomeTabErrorState extends HomeTabState {}
 
 class HomeTabSuccessState extends HomeTabState {
-  List<Result> resultList;
-  HomeTabSuccessState(this.resultList);
+  List<Result> resultResponseList;
+  LatestDM releaseResponse;
+  List<Result> recommendedResponseList;
+
+  HomeTabSuccessState(this.resultResponseList, this.releaseResponse,
+      this.recommendedResponseList);
 }

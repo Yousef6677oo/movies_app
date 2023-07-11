@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../../../model/SearchResponseDM.dart';
+
 
 class SearchTab extends StatefulWidget {
   static String routeName = "searchScreen";
+  List<Result> searchList;
+  SearchTab(this.searchList);
 
   @override
   State<SearchTab> createState() => _SearchTabState();
@@ -10,9 +14,9 @@ class SearchTab extends StatefulWidget {
 class _SearchTabState extends State<SearchTab> {
   TextEditingController searchController = TextEditingController();
   List<String> testList = [];
-
   @override
   Widget build(BuildContext context) {
+    print(widget.searchList);
     return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -21,7 +25,6 @@ class _SearchTabState extends State<SearchTab> {
           elevation: 0,
           title: SizedBox(
             width: double.infinity,
-            height: 80,
             child: Center(
               child: buildSearchTextField(),
             ),
@@ -49,10 +52,9 @@ class _SearchTabState extends State<SearchTab> {
   Widget buildSearchTextField() {
     return TextField(
       onSubmitted: (value) {
-        setState(() {
-
-        });
+        setState(() {});
       },
+      cursorColor: const Color(0xffFFBB3B),
       controller: searchController,
       decoration: InputDecoration(
         filled: true,

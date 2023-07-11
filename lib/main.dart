@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies/screens/initial_screen/initial_screen.dart';
+import 'package:movies/screens/initial_screen/tabs/browse/browse_specific_category.dart';
+import 'package:movies/screens/initial_screen/tabs/browse/browse_specific_category_tab_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {InitialScreen.routeName: (_) => InitialScreen()},
+      routes: {
+        InitialScreen.routeName: (_) => InitialScreen(),
+        BrowseSpecificCategory.routeName: (_) => BrowseSpecificCategory()
+      },
       initialRoute: InitialScreen.routeName,
     );
   }

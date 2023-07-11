@@ -1,12 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movies/model/LatestResponseDM.dart';
+import 'package:movies/model/recommendedDM.dart';
 
 import '../../../../model/PopularResponseDM.dart';
 import '../../../../model/popularDM.dart';
 
 class HomeTab extends StatefulWidget {
-  List<Result> listResult;
-  HomeTab(this.listResult);
+  List<Result> popularListResult;
+  LatestDM releaseResult;
+  List<Result> recommendedListResult;
+
+  HomeTab(
+      this.popularListResult, this.releaseResult, this.recommendedListResult);
+
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
@@ -14,12 +23,7 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   List<PopularDataModel> popularData = [];
   List<Stack> popularStack = [];
-  List<String> popImages = [
-    "assets/releases_1_test.png",
-    "assets/releases_2_test.png",
-    "assets/releases_3_test.png",
-    "assets/releases_4_test.png"
-  ];
+  List<RecommendedDataModel> recommendedData = [];
   List<String> releasesImages = [
     "assets/releases_1_test.png",
     "assets/releases_2_test.png",
@@ -36,30 +40,32 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     mapPopular();
+    mapRecommended();
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          popularBuild(),
-          newReleasesBuild(),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-          recommendedBuild(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            popularBuild(),
+            newReleasesBuild(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+            recommendedBuild(),
+          ],
+        ),
       ),
     );
   }
 
   Widget popularBuild() {
     return ImageSlideshow(
-      height: MediaQuery.of(context).size.height * 0.32,
-      width: MediaQuery.of(context).size.width,
-      initialPage: 0,
-      indicatorColor: Colors.transparent,
-      indicatorBackgroundColor: Colors.transparent,
-      autoPlayInterval: 5000,
-      isLoop: true,
-      children: popularStack
-    );
+        height: MediaQuery.of(context).size.height * 0.32,
+        width: MediaQuery.of(context).size.width,
+        initialPage: 0,
+        indicatorColor: Colors.transparent,
+        indicatorBackgroundColor: Colors.transparent,
+        autoPlayInterval: 5000,
+        isLoop: true,
+        children: popularStack);
   }
 
   Widget newReleasesBuild() {
@@ -102,7 +108,7 @@ class _HomeTabState extends State<HomeTab> {
                           ),
                           Align(
                             alignment: Alignment.topLeft,
-                            child: Image.asset("assets/not_added_icon.png"),
+                            child: SvgPicture.asset("assets/bookmark_icon.svg"),
                           )
                         ],
                       ),
@@ -143,57 +149,68 @@ class _HomeTabState extends State<HomeTab> {
                   itemCount: recommendedImages.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 2, horizontal: 7),
+                      margin: const EdgeInsets.symmetric(horizontal: 7),
                       color: const Color(0xff343534),
                       child: Column(
                         children: [
                           Stack(
                             children: [
-                              //todo: change image asset to url and get data from api
-                              Image.asset(
-                                recommendedImages[index],
-                                fit: BoxFit.fill,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.17,
-                                width: MediaQuery.of(context).size.width * 0.29,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      "https://image.tmdb.org/t/p/w500/${recommendedData[index].posterPath}",
+                                  fit: BoxFit.fill,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.17,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.29,
+                                ),
                               ),
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: Image.asset("assets/not_added_icon.png"),
+                                child: SvgPicture.asset(
+                                    "assets/bookmark_icon.svg"),
                               )
                             ],
                           ),
-                          const Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.star,
                                     color: Color(0xffFFBB3B),
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Text(
-                                    "7.7",
-                                    style: TextStyle(
+                                    "${recommendedData[index].voteAverage}",
+                                    style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         color: Color(0xffffffff)),
                                   )
                                 ],
                               ),
-                              Text(
-                                "Deadpool 2",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xffffffff)),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.29,
+                                child: Text(
+                                  recommendedData[index].title,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xffffffff)),
+                                  softWrap: false,
+                                  overflow: TextOverflow.clip,
+                                  maxLines: 1,
+                                ),
                               ),
                               Text(
-                                "2018 R 1h 59m",
-                                style: TextStyle(color: Color(0xffB5B4B4)),
+                                recommendedData[index].releaseDate,
+                                style:
+                                    const TextStyle(color: Color(0xffB5B4B4)),
                               )
                             ],
                           )
@@ -208,53 +225,68 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  mapPopular(){
-    popularData= widget.listResult.map((e) => PopularDataModel(
-      imageBack: e.backdropPath??"",
-      poster: e.posterPath??"",
-      title: e.title??"",
-    )).toList();
-    popularStack = popularData.map((e) => Stack(alignment: Alignment.topCenter, children: [
-      //todo: change image asset to url and get data from api
-      Image.network("https://image.tmdb.org/t/p/w500/${e.imageBack}",
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.25),
-      Image.asset("assets/play_button.png",
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.24),
-      Align(
-        alignment: AlignmentDirectional.bottomStart,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          //todo: change image asset to url and get data from api
-          child: Image.network(
-            "https://image.tmdb.org/t/p/w500/${e.poster}",
-            width: MediaQuery.of(context).size.width * 0.37,
-            height: MediaQuery.of(context).size.height * 0.22,
-          ),
-        ),
-      ),
-      Positioned(
-          top: MediaQuery.of(context).size.height * 0.26,
-          right: MediaQuery.of(context).size.width * 0.03,
-          child: Text(
-            e.title,
-            style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: Color(0xffFFFFFF)),
-          )),
-      Positioned(
-          top: MediaQuery.of(context).size.height * 0.29,
-          right: MediaQuery.of(context).size.width * 0.37,
-          child: const Text(
-            "2019  PG-13",
-            style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: Color(0xffB5B4B4)),
-          ))
-    ])).toList();
+  mapRecommended() {
+    recommendedData = widget.recommendedListResult
+        .map((e) => RecommendedDataModel(
+              title: e.title ?? '',
+              posterPath: e.posterPath ?? '',
+              releaseDate: e.releaseDate ?? '',
+              voteAverage: e.voteAverage ?? 0,
+            ))
+        .toList();
   }
 
+  mapPopular() {
+    popularData = widget.popularListResult
+        .map((e) => PopularDataModel(
+              backdropPath: e.backdropPath ?? "",
+              posterPath: e.posterPath ?? "",
+              title: e.title ?? "",
+            ))
+        .toList();
+    popularStack = popularData
+        .map((e) => Stack(alignment: Alignment.topCenter, children: [
+              CachedNetworkImage(
+                  imageUrl: "https://image.tmdb.org/t/p/w500/${e.backdropPath}",
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.25),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.1,
+                child: SvgPicture.asset("assets/play_button.svg",
+                    height: MediaQuery.of(context).size.height * 0.07),
+              ),
+              Align(
+                alignment: AlignmentDirectional.bottomStart,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: CachedNetworkImage(
+                    imageUrl: "https://image.tmdb.org/t/p/w500/${e.posterPath}",
+                    width: MediaQuery.of(context).size.width * 0.37,
+                    height: MediaQuery.of(context).size.height * 0.22,
+                  ),
+                ),
+              ),
+              Positioned(
+                  top: MediaQuery.of(context).size.height * 0.26,
+                  right: MediaQuery.of(context).size.width * 0.03,
+                  child: Text(
+                    e.title,
+                    style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xffFFFFFF)),
+                  )),
+              Positioned(
+                  top: MediaQuery.of(context).size.height * 0.29,
+                  right: MediaQuery.of(context).size.width * 0.37,
+                  child: const Text(
+                    "2019  PG-13",
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xffB5B4B4)),
+                  ))
+            ]))
+        .toList();
+  }
 }

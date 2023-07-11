@@ -1,6 +1,10 @@
- class PopularDataModel{
-  String imageBack;
-  String poster;
+class PopularDataModel {
+  String backdropPath;
+  String posterPath;
   String title;
-  PopularDataModel({required this.imageBack,required this.poster,required this.title});
+
+  PopularDataModel(
+      {required this.backdropPath,
+      required this.posterPath,
+      required this.title});
 }
