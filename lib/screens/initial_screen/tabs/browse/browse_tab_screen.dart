@@ -6,7 +6,6 @@ import 'browse_tab.dart';
 
 class BrowseTabScreen extends StatelessWidget {
   BrowseTapViewModel browseTapViewModel = BrowseTapViewModel();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +14,10 @@ class BrowseTabScreen extends StatelessWidget {
         bloc: browseTapViewModel,
         builder: (context, state) {
           if (state is BrowseTabLoadState) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+                child: CircularProgressIndicator(
+              color: Color(0xffFFBB3B),
+            ));
           }
           if (state is BrowseTabSuccessState) {
             return BrowseTab(state.genreResponseList);

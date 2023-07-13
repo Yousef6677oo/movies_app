@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:movies/screens/initial_screen/tabs/browse/browse_specific_category_tab_screen.dart';
 import 'package:movies/screens/initial_screen/tabs/browse/browse_tab_screen.dart';
 import 'package:movies/screens/initial_screen/tabs/home/home_tab_screen.dart';
 import 'package:movies/screens/initial_screen/tabs/search/search_tab_screen.dart';
 import 'package:movies/screens/initial_screen/tabs/watchlist/watchlist_tab.dart';
 import 'package:movies/utilities/app_colors.dart';
+import 'package:provider/provider.dart';
+
+import '../../provider/search_provider.dart';
 
 class InitialScreen extends StatefulWidget {
   static String routeName = "initial screen";
@@ -14,16 +16,21 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
+  static String searchQuery = "";
+
   int currentIndex = 0;
 
   List<Widget> tabs = [
     HomeTabScreen(),
-    SearchTabScreen(),
+    SearchTabScreen(searchQuery),
     BrowseTabScreen(),
     WatchlistTab(),
   ];
+
   @override
   Widget build(BuildContext context) {
+    SearchProvider provider = Provider.of(context);
+    searchQuery = provider.query;
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
@@ -31,9 +38,7 @@ class _InitialScreenState extends State<InitialScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Container(
-        child: tabs[currentIndex],
-      ),
+      body: Container(child: changeTap()),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.bottomNavigationBarItemColor,
         type: BottomNavigationBarType.fixed,
@@ -66,5 +71,17 @@ class _InitialScreenState extends State<InitialScreen> {
         ],
       ),
     );
+  }
+
+  Widget changeTap() {
+    if (currentIndex == 0) {
+      return HomeTabScreen();
+    } else if (currentIndex == 1) {
+      return SearchTabScreen(searchQuery);
+    } else if (currentIndex == 2) {
+      return BrowseTabScreen();
+    } else {
+      return WatchlistTab();
+    }
   }
 }

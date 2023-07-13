@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:movies/model/DiscoverResponseDM.dart';
+
 import '../model/DetailsResponseDM.dart';
 import '../model/GenreResponseDM.dart';
 import '../model/LatestResponseDM.dart';
@@ -38,7 +40,8 @@ abstract class ApiManager {
   }
 
   static Future<SearchDM> getSearch(String query) async {
-    Uri url = Uri.https(baseUrl, '3/search/movie', {"api_key": apiKey, "query": query});
+    Uri url = Uri.https(
+        baseUrl, '3/search/movie', {"api_key": apiKey, "query": query});
     http.Response response = await http.get(url);
     Map json = jsonDecode(response.body) as Map;
     SearchDM responseDM = SearchDM.fromJson(json);
@@ -71,7 +74,8 @@ abstract class ApiManager {
   }
 
   static Future<DiscoverDM> getDiscover(String genreID) async {
-    Uri url = Uri.https(baseUrl, '3/discover/movie', {"api_key": apiKey,"with_genres":"28"});
+    Uri url = Uri.https(baseUrl, '3/discover/movie',
+        {"api_key": apiKey, "with_genres": genreID});
     http.Response response = await http.get(url);
     Map json = jsonDecode(response.body) as Map;
     DiscoverDM responseDM = DiscoverDM.fromJson(json);

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movies/model/GenreResponseDM.dart';
-import '../../../../model/DiscoverResponseDM.dart';
-import 'browse_specific_category.dart';
+
+import '../../../../model/browseDM.dart';
+import '../../../browse_specific_category_screen/browse_specific_category_screen.dart';
 
 class BrowseTab extends StatefulWidget {
-  List<Genre> genreResponseList;
-  BrowseTab(this.genreResponseList);
+  List<Genre> genreResponseList = [];
 
+  BrowseTab(this.genreResponseList);
 
   @override
   State<BrowseTab> createState() => _BrowseTabState();
@@ -70,30 +71,40 @@ class _BrowseTabState extends State<BrowseTab> {
                       mainAxisSpacing: 15),
                   itemCount: browseImageUrl.length,
                   itemBuilder: (BuildContext ctx, index) {
-                    return InkWell(
+                    return GestureDetector(
+                      // onTap: () {
+                      //   Navigator.pushNamed(
+                      //       context, BrowseSpecificCategoryScreen.routeName,
+                      //       arguments:
+                      //           widget.genreResponseList[index].id.toString());
+                      // },
                       onTap: () {
-
-                        Navigator.of(context).pushNamed(
-                            BrowseSpecificCategory.routeName,
-                            arguments: widget.genreResponseList[index].id
-                        );
+                        Navigator.pushNamed(
+                            context, BrowseSpecificCategoryScreen.routeName,
+                            arguments: BrowseDM(
+                                widget.genreResponseList[index].name!,
+                                widget.genreResponseList[index].id.toString()));
                       },
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              browseImageUrl[index],
-                              height: MediaQuery.of(context).size.height * 0.15,
-                              fit: BoxFit.fitHeight,
+                            child: Opacity(
+                              opacity: 0.7,
+                              child: Image.asset(
+                                browseImageUrl[index],
+                                height:
+                                    MediaQuery.of(context).size.height * 0.15,
+                                fit: BoxFit.fitHeight,
+                              ),
                             ),
                           ),
                           Text(
                             widget.genreResponseList[index].name!,
                             style: const TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                                 color: Color(0xffffffff)),
                           ),
                         ],
