@@ -6,7 +6,6 @@ import '../../../../view_model/search_tab_view_model.dart';
 
 class SearchTabScreen extends StatelessWidget {
   String query = "";
-
   SearchTabScreen(this.query);
 
   @override

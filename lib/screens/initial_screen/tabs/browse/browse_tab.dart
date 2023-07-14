@@ -70,7 +70,7 @@ class _BrowseTabState extends State<BrowseTab> {
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 15),
                   itemCount: browseImageUrl.length,
-                  itemBuilder: (BuildContext ctx, index) {
+                  itemBuilder: (BuildContext context, index) {
                     return GestureDetector(
                       // onTap: () {
                       //   Navigator.pushNamed(

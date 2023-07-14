@@ -22,7 +22,7 @@ class _SearchTabState extends State<SearchTab> {
   @override
   Widget build(BuildContext context) {
     provider = Provider.of(context);
-    print("SearchTab: ${widget.searchResultList.isEmpty}");
+    provider.query = "";
     return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(

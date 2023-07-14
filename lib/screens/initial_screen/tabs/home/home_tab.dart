@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movies/model/LatestResponseDM.dart';
-import 'package:movies/model/recommendedDM.dart';
+import 'package:movies/model/homeDM.dart';
 
 import '../../../../model/PopularResponseDM.dart';
-import '../../../../model/popularDM.dart';
+import '../../../movie_details_screen/movie_details_screen.dart';
 
 class HomeTab extends StatefulWidget {
   List<Result> popularListResult;
@@ -21,20 +21,14 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  List<PopularDataModel> popularData = [];
-  List<Stack> popularStack = [];
-  List<RecommendedDataModel> recommendedData = [];
+  List<HomeDataModel> popularData = [];
+  List<Widget> popularStack = [];
+  List<HomeDataModel> recommendedData = [];
   List<String> releasesImages = [
     "assets/releases_1_test.png",
     "assets/releases_2_test.png",
     "assets/releases_3_test.png",
     "assets/releases_4_test.png"
-  ];
-  List<String> recommendedImages = [
-    "assets/releases_2_test.png",
-    "assets/releases_2_test.png",
-    "assets/releases_2_test.png",
-    "assets/releases_2_test.png"
   ];
 
   @override
@@ -146,75 +140,85 @@ class _HomeTabState extends State<HomeTab> {
               child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: recommendedImages.length,
+                  itemCount: recommendedData.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 7),
-                      color: const Color(0xff343534),
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      "https://image.tmdb.org/t/p/w500/${recommendedData[index].posterPath}",
-                                  fit: BoxFit.fill,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.17,
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, MovieDetailsScreen.routeName,
+                            arguments: recommendedData[index]);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 7),
+                        color: const Color(0xff343534),
+                        child: Column(
+                          children: [
+                            Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: CachedNetworkImage(
+                                    imageUrl: "https://image.tmdb.org/t/p/w500/${recommendedData[index].posterPath}",
+                                    fit: BoxFit.fill,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.17,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.29,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {},
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: SvgPicture.asset(
+                                        "assets/bookmark_icon.svg"),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 1),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.star,
+                                      color: Color(0xffFFBB3B),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      "${recommendedData[index].voteAverage}",
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xffffffff)),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.29,
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: SvgPicture.asset(
-                                    "assets/bookmark_icon.svg"),
-                              )
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 1),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.star,
-                                    color: Color(0xffFFBB3B),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Text(
-                                    "${recommendedData[index].voteAverage}",
+                                  child: Text(
+                                    recommendedData[index].title,
                                     style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: FontWeight.w600,
                                         color: Color(0xffffffff)),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.29,
-                                child: Text(
-                                  recommendedData[index].title,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xffffffff)),
-                                  softWrap: false,
-                                  overflow: TextOverflow.clip,
-                                  maxLines: 1,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                recommendedData[index].releaseDate,
-                                style:
-                                    const TextStyle(color: Color(0xffB5B4B4)),
-                              )
-                            ],
-                          )
-                        ],
+                                Text(
+                                  recommendedData[index].releaseDate,
+                                  style:
+                                      const TextStyle(color: Color(0xffB5B4B4)),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     );
                   }),
@@ -227,66 +231,81 @@ class _HomeTabState extends State<HomeTab> {
 
   mapRecommended() {
     recommendedData = widget.recommendedListResult
-        .map((e) => RecommendedDataModel(
-              title: e.title ?? '',
-              posterPath: e.posterPath ?? '',
-              releaseDate: e.releaseDate ?? '',
-              voteAverage: e.voteAverage ?? 0,
-            ))
+        .map((e) => HomeDataModel(
+            title: e.title ?? '',
+            posterPath: e.posterPath ?? '',
+            releaseDate: e.releaseDate ?? '',
+            voteAverage: e.voteAverage ?? 0,
+            backdropPath: e.backdropPath ?? '',
+            overview: e.overview ?? '',
+            id: e.id ?? 0))
         .toList();
   }
 
   mapPopular() {
     popularData = widget.popularListResult
-        .map((e) => PopularDataModel(
+        .map((e) => HomeDataModel(
               backdropPath: e.backdropPath ?? "",
               posterPath: e.posterPath ?? "",
               title: e.title ?? "",
+              id: e.id ?? 0,
+              voteAverage: e.voteAverage ?? 0,
+              overview: e.overview ?? '',
+              releaseDate: e.releaseDate ?? '',
             ))
         .toList();
     popularStack = popularData
-        .map((e) => Stack(alignment: Alignment.topCenter, children: [
-              CachedNetworkImage(
-                  imageUrl: "https://image.tmdb.org/t/p/w500/${e.backdropPath}",
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.25),
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.1,
-                child: SvgPicture.asset("assets/play_button.svg",
-                    height: MediaQuery.of(context).size.height * 0.07),
-              ),
-              Align(
-                alignment: AlignmentDirectional.bottomStart,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: CachedNetworkImage(
-                    imageUrl: "https://image.tmdb.org/t/p/w500/${e.posterPath}",
-                    width: MediaQuery.of(context).size.width * 0.37,
-                    height: MediaQuery.of(context).size.height * 0.22,
+        .map((e) => InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, MovieDetailsScreen.routeName,
+                    arguments: e);
+              },
+              child: Stack(alignment: Alignment.topCenter, children: [
+                CachedNetworkImage(
+                    imageUrl:
+                        "https://image.tmdb.org/t/p/w500/${e.backdropPath}",
+                    fit: BoxFit.fill,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.25),
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.1,
+                  child: SvgPicture.asset("assets/play_button.svg",
+                      height: MediaQuery.of(context).size.height * 0.07),
+                ),
+                Align(
+                  alignment: AlignmentDirectional.bottomStart,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          "https://image.tmdb.org/t/p/w500/${e.posterPath}",
+                      width: MediaQuery.of(context).size.width * 0.37,
+                      height: MediaQuery.of(context).size.height * 0.22,
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                  top: MediaQuery.of(context).size.height * 0.26,
-                  right: MediaQuery.of(context).size.width * 0.03,
-                  child: Text(
-                    e.title,
-                    style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xffFFFFFF)),
-                  )),
-              Positioned(
-                  top: MediaQuery.of(context).size.height * 0.29,
-                  right: MediaQuery.of(context).size.width * 0.37,
-                  child: const Text(
-                    "2019  PG-13",
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xffB5B4B4)),
-                  ))
-            ]))
+                Positioned(
+                    top: MediaQuery.of(context).size.height * 0.26,
+                    right: MediaQuery.of(context).size.width * 0.03,
+                    child: Text(
+                      e.title,
+                      style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xffFFFFFF)),
+                    )),
+                Positioned(
+                    top: MediaQuery.of(context).size.height * 0.29,
+                    right: MediaQuery.of(context).size.width * 0.37,
+                    child: const Text(
+                      "2019  PG-13",
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xffB5B4B4)),
+                    ))
+              ]),
+            ))
         .toList();
   }
 }

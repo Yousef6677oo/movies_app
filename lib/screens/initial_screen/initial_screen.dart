@@ -20,12 +20,12 @@ class _InitialScreenState extends State<InitialScreen> {
 
   int currentIndex = 0;
 
-  List<Widget> tabs = [
-    HomeTabScreen(),
-    SearchTabScreen(searchQuery),
-    BrowseTabScreen(),
-    WatchlistTab(),
-  ];
+  // List<Widget> tabs = [
+  //   HomeTabScreen(),
+  //   SearchTabScreen(searchQuery),
+  //   BrowseTabScreen(),
+  //   WatchlistTab(),
+  // ];
 
   @override
   Widget build(BuildContext context) {
