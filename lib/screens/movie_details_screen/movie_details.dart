@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:movies/model/SimilarResponseDM.dart';
 
 import '../../model/homeDM.dart';
+import 'movie_details_screen.dart';
 
 class MovieDetails extends StatefulWidget {
   List<Result> listSimilarItem;
@@ -38,8 +39,9 @@ class _MovieDetailsState extends State<MovieDetails> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Image.network(
-                  "https://image.tmdb.org/t/p/w500/${widget.args.backdropPath}",
+                CachedNetworkImage(
+                  imageUrl: "https://image.tmdb.org/t/p/w500/${widget.args.backdropPath}",
+                  errorWidget: (context, url, error) => Image.asset("assets/not_found_icon.png"),
                   fit: BoxFit.fitWidth,
                   width: double.infinity,
                 ),
@@ -145,7 +147,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
-                                        color: Color(0xff514F4F), width: 1)),
+                                        color: const Color(0xff514F4F), width: 1)),
                                 child: const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
@@ -178,13 +180,18 @@ class _MovieDetailsState extends State<MovieDetails> {
                             ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            widget.args.overview,
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xffCBCBCB)),
-                            maxLines: 4,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.09,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: Text(
+                                widget.args.overview,
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xffCBCBCB)),
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 5),
                           Row(
@@ -197,7 +204,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                "${widget.args.voteAverage}",
+                                "${widget.args.voteAverage == 0 ? "unknown" : widget.args.voteAverage?.toStringAsFixed(1)}",
                                 style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
@@ -243,91 +250,98 @@ class _MovieDetailsState extends State<MovieDetails> {
                                 itemCount: widget.listSimilarItem.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Container(
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xff343534),
+                                        borderRadius: BorderRadius.circular(4)),
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 7),
-                                    color: const Color(0xff343534),
-                                    child: Column(
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              child: CachedNetworkImage(
-                                                imageUrl:
-                                                    "https://image.tmdb.org/t/p/w500/${widget.listSimilarItem[index].posterPath}",
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Image.asset(
-                                                  "assets/not_found_icon.png",
+                                    child: InkWell(
+                                      onTap: (){
+                                        Navigator.pushNamed(context, MovieDetailsScreen.routeName,arguments: HomeDataModel(title: widget.listSimilarItem[index].title??'', posterPath: widget.listSimilarItem[index].posterPath??'', releaseDate: widget.listSimilarItem[index].releaseDate??'', voteAverage: widget.listSimilarItem[index].voteAverage??0, backdropPath: widget.listSimilarItem[index].backdropPath??'', id: widget.listSimilarItem[index].id??0, overview: widget.listSimilarItem[index].overview??''));
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Stack(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                  "https://image.tmdb.org/t/p/w500/${widget.listSimilarItem[index].posterPath}",
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                      Image.asset(
+                                                    "assets/not_found_icon.png",
+                                                  ),
+                                                  fit: BoxFit.fill,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.17,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.29,
                                                 ),
-                                                fit: BoxFit.fill,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.17,
+                                              ),
+                                              Align(
+                                                alignment: Alignment.topLeft,
+                                                child: SvgPicture.asset(
+                                                    "assets/bookmark_icon.svg"),
+                                              )
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(height: 1),
+                                              Row(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.star,
+                                                    color: Color(0xffFFBB3B),
+                                                  ),
+                                                  const SizedBox(width: 5),
+                                                  Text(
+                                                    "${widget.listSimilarItem[index].voteAverage == 0 ? "unknown" : widget.listSimilarItem[index].voteAverage?.toStringAsFixed(1)}",
+                                                    style: const TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                        color: Color(0xffffffff)),
+                                                  )
+                                                ],
+                                              ),
+                                              SizedBox(
                                                 width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.27,
-                                              ),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: SvgPicture.asset(
-                                                  "assets/bookmark_icon.svg"),
-                                            )
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(height: 1),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const Icon(
-                                                  Icons.star,
-                                                  color: Color(0xffFFBB3B),
-                                                ),
-                                                const SizedBox(width: 5),
-                                                Text(
-                                                  "${widget.listSimilarItem[index].voteAverage == 0 ? "unknown" : widget.listSimilarItem[index].voteAverage?.toStringAsFixed(1)}",
+                                                    .size
+                                                    .width *
+                                                    0.29,
+                                                child: Text(
+                                                  widget.listSimilarItem[index]
+                                                      .title ??
+                                                      '',
                                                   style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                                      fontWeight: FontWeight.w600,
                                                       color: Color(0xffffffff)),
-                                                )
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.29,
-                                              child: Text(
-                                                widget.listSimilarItem[index]
-                                                        .title ??
-                                                    '',
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color(0xffffffff)),
-                                                softWrap: false,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
+                                                  softWrap: false,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                ),
                                               ),
-                                            ),
-                                            const Text(
-                                              "2018  R  1h 59m",
-                                              style: TextStyle(
-                                                  color: Color(0xffB5B4B4)),
-                                            )
-                                          ],
-                                        )
-                                      ],
+                                              const Text(
+                                                "2018  R  1h 59m",
+                                                style: TextStyle(
+                                                    color: Color(0xffB5B4B4)),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   );
                                 }),

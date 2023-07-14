@@ -20,8 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         InitialScreen.routeName: (_) => InitialScreen(),
-        BrowseSpecificCategoryScreen.routeName: (_) =>
-            BrowseSpecificCategoryScreen(),
+        BrowseSpecificCategoryScreen.routeName: (_) => BrowseSpecificCategoryScreen(),
         MovieDetailsScreen.routeName: (_) => MovieDetailsScreen()
       },
       initialRoute: InitialScreen.routeName,

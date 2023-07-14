@@ -10,7 +10,6 @@ class BrowseSpecificCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String args = ModalRoute.of(context)!.settings.arguments as String;
     BrowseDM args = ModalRoute.of(context)!.settings.arguments as BrowseDM;
 
     BrowseSpecificCategoryScreenViewModel

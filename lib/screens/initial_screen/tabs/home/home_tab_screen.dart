@@ -20,8 +20,8 @@ class HomeTabScreen extends StatelessWidget {
             ));
           }
           if (state is HomeTabSuccessState) {
-            return HomeTab(state.resultResponseList, state.releaseResponse,
-                state.recommendedResponseList);
+            return HomeTab(state.resultResponseList,
+                state.recommendedResponseList, state.upcomingResponseList);
           }
           return Container();
         },

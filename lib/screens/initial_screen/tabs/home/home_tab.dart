@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movies/model/LatestResponseDM.dart';
 import 'package:movies/model/homeDM.dart';
 
 import '../../../../model/PopularResponseDM.dart';
@@ -10,11 +9,11 @@ import '../../../movie_details_screen/movie_details_screen.dart';
 
 class HomeTab extends StatefulWidget {
   List<Result> popularListResult;
-  LatestDM releaseResult;
   List<Result> recommendedListResult;
+  List<Result> upcomingResponseList;
 
-  HomeTab(
-      this.popularListResult, this.releaseResult, this.recommendedListResult);
+  HomeTab(this.popularListResult, this.recommendedListResult,
+      this.upcomingResponseList);
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -24,12 +23,6 @@ class _HomeTabState extends State<HomeTab> {
   List<HomeDataModel> popularData = [];
   List<Widget> popularStack = [];
   List<HomeDataModel> recommendedData = [];
-  List<String> releasesImages = [
-    "assets/releases_1_test.png",
-    "assets/releases_2_test.png",
-    "assets/releases_3_test.png",
-    "assets/releases_4_test.png"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +34,7 @@ class _HomeTabState extends State<HomeTab> {
         child: Column(
           children: [
             popularBuild(),
-            newReleasesBuild(),
+            upcomingBuild(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.015),
             recommendedBuild(),
           ],
@@ -62,7 +55,7 @@ class _HomeTabState extends State<HomeTab> {
         children: popularStack);
   }
 
-  Widget newReleasesBuild() {
+  Widget upcomingBuild() {
     return Container(
       color: const Color(0xff282A28),
       height: MediaQuery.of(context).size.height * 0.25,
@@ -74,7 +67,7 @@ class _HomeTabState extends State<HomeTab> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
             child: Text(
-              "New Releases",
+              "Upcoming",
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -87,24 +80,56 @@ class _HomeTabState extends State<HomeTab> {
               child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: releasesImages.length,
+                  itemCount: widget.upcomingResponseList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6),
-                      child: Stack(
-                        children: [
-                          //todo: change image asset to url and get data from api
-                          Image.asset(
-                            releasesImages[index],
-                            fit: BoxFit.fill,
-                            height: MediaQuery.of(context).size.height * 0.18,
-                            width: MediaQuery.of(context).size.width * 0.29,
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: SvgPicture.asset("assets/bookmark_icon.svg"),
-                          )
-                        ],
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, MovieDetailsScreen.routeName,
+                              arguments: HomeDataModel(
+                                  title: widget.upcomingResponseList[index].title ??
+                                      '',
+                                  posterPath: widget.upcomingResponseList[index]
+                                          .posterPath ??
+                                      '',
+                                  releaseDate: widget
+                                          .upcomingResponseList[index]
+                                          .releaseDate ??
+                                      '',
+                                  voteAverage: widget
+                                          .upcomingResponseList[index]
+                                          .voteAverage ??
+                                      0,
+                                  backdropPath: widget
+                                          .upcomingResponseList[index]
+                                          .backdropPath ??
+                                      '',
+                                  id: widget.upcomingResponseList[index].id ?? 0,
+                                  overview: widget.upcomingResponseList[index].overview ?? ''));
+                        },
+                        child: Stack(
+                          alignment: Alignment.topLeft,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    "https://image.tmdb.org/t/p/w500/${widget.upcomingResponseList[index].posterPath}",
+                                fit: BoxFit.fill,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.18,
+                                width: MediaQuery.of(context).size.width * 0.29,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child:
+                                  SvgPicture.asset("assets/bookmark_icon.svg"),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   }),
