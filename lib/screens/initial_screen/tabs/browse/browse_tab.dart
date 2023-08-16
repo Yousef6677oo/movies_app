@@ -72,12 +72,6 @@ class _BrowseTabState extends State<BrowseTab> {
                   itemCount: browseImageUrl.length,
                   itemBuilder: (BuildContext context, index) {
                     return GestureDetector(
-                      // onTap: () {
-                      //   Navigator.pushNamed(
-                      //       context, BrowseSpecificCategoryScreen.routeName,
-                      //       arguments:
-                      //           widget.genreResponseList[index].id.toString());
-                      // },
                       onTap: () {
                         Navigator.pushNamed(
                             context, BrowseSpecificCategoryScreen.routeName,

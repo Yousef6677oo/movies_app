@@ -312,19 +312,22 @@ class _HomeTabState extends State<HomeTab> {
                 Positioned(
                     top: MediaQuery.of(context).size.height * 0.26,
                     right: MediaQuery.of(context).size.width * 0.03,
-                    child: Text(
-                      e.title,
-                      style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xffFFFFFF)),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width*0.6,
+                      child: Text(
+                        e.title,
+                        style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xffFFFFFF),overflow: TextOverflow.visible),
+                      ),
                     )),
                 Positioned(
                     top: MediaQuery.of(context).size.height * 0.29,
-                    right: MediaQuery.of(context).size.width * 0.37,
-                    child: const Text(
-                      "2019  PG-13",
-                      style: TextStyle(
+                    right: MediaQuery.of(context).size.width * 0.1,
+                    child: Text(
+                      e.releaseDate.split('-').first,
+                      style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
                           color: Color(0xffB5B4B4)),
