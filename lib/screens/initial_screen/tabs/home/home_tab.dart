@@ -237,7 +237,10 @@ class _HomeTabState extends State<HomeTab> {
                                   ),
                                 ),
                                 Text(
-                                  recommendedData[index].releaseDate.split('-').first,
+                                  recommendedData[index]
+                                      .releaseDate
+                                      .split('-')
+                                      .first,
                                   style:
                                       const TextStyle(color: Color(0xffB5B4B4)),
                                 )

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:movies/view_model/sign_up_view_model.dart';
+
 import '../../components/custom_authentication_textField.dart';
 import '../../components/custom_elevatedButton.dart';
 import '../../utilities/app_colors.dart';
@@ -17,14 +18,10 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController fullNameController =
-      TextEditingController(text: 'yousef ahmed kamel');
-  TextEditingController mobileNumberController =
-      TextEditingController(text: '01026283799');
-  TextEditingController emailController =
-      TextEditingController(text: 'yousefahmed@gmail.com');
-  TextEditingController passwordController =
-      TextEditingController(text: '123456789');
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -102,11 +99,15 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-   Future<void>register() async {
+  Future<void> register() async {
     if (_formKey.currentState?.validate() == false) {
       return;
     }
-    await widget.viewModel.signUp(fullNameController.text, mobileNumberController.text,emailController.text, passwordController.text);
+    await widget.viewModel.signUp(
+        fullNameController.text,
+        mobileNumberController.text,
+        emailController.text,
+        passwordController.text);
   }
 
   String? validateFullNameTextField(String value) {

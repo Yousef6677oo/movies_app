@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/data/api_manager.dart';
+
 import '../model/SearchResponseDM.dart';
 
 class SearchTapViewModel extends Cubit<SearchTabState> {
@@ -11,7 +12,7 @@ class SearchTapViewModel extends Cubit<SearchTabState> {
   getAllSearchMovies() async {
     SearchDM searchResponse = await ApiManager.getSearch(query);
     List<Result> resultResponseList = searchResponse.results!;
-    
+
     emit(SearchTabSuccessState(resultResponseList));
   }
 }

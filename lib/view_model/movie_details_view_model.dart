@@ -26,7 +26,7 @@ class MovieDetailsViewModel extends Cubit<MovieDetailsViewState> {
 
 abstract class MovieDetailsViewState {}
 
-class InitState  extends MovieDetailsViewState{}
+class InitState extends MovieDetailsViewState {}
 
 class MovieDetailsLoadState extends MovieDetailsViewState {}
 

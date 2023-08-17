@@ -26,7 +26,8 @@ class MovieDetailsScreen extends StatelessWidget {
             ));
           }
           if (state is MovieDetailsSuccessState) {
-            return MovieDetails(args, state.similarResponseList, state.genreList);
+            return MovieDetails(
+                args, state.similarResponseList, state.genreList);
           }
           return Container();
         },

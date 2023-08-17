@@ -8,7 +8,6 @@ import 'package:movies/screens/sign_in_screen/sign_in_screen.dart';
 import 'package:movies/screens/sign_up_screen/sign_up_screen.dart';
 import 'package:provider/provider.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

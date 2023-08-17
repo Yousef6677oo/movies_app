@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/model/homeDM.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../model/SearchResponseDM.dart';
 import '../../../../provider/search_provider.dart';
+import '../../../movie_details_screen/movie_details_screen.dart';
 
 class SearchTab extends StatefulWidget {
   static String routeName = "searchScreen";
@@ -46,76 +48,99 @@ class _SearchTabState extends State<SearchTab> {
             : ListView.builder(
                 itemCount: widget.searchResultList.length,
                 itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      Row(
-                        children: [
-                          const Spacer(
-                            flex: 1,
-                          ),
-                          Expanded(
-                              flex: 8,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset(
-                                    "assets/not_found_icon.png",
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, MovieDetailsScreen.routeName,
+                          arguments: HomeDataModel(
+                              title: widget.searchResultList[index].title ?? '',
+                              posterPath:
+                                  widget.searchResultList[index].posterPath ??
+                                      '',
+                              releaseDate:
+                                  widget.searchResultList[index].releaseDate ??
+                                      '',
+                              voteAverage:
+                                  widget.searchResultList[index].voteAverage ??
+                                      '',
+                              backdropPath:
+                                  widget.searchResultList[index].backdropPath ??
+                                      '',
+                              id: widget.searchResultList[index].id ?? 0,
+                              overview:
+                                  widget.searchResultList[index].overview ??
+                                      ''));
+                    },
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Row(
+                          children: [
+                            const Spacer(
+                              flex: 1,
+                            ),
+                            Expanded(
+                                flex: 8,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset(
+                                      "assets/not_found_icon.png",
+                                      width: 300,
+                                      height: 100,
+                                    ),
+                                    imageUrl:
+                                        "https://image.tmdb.org/t/p/w500/${widget.searchResultList[index].backdropPath}",
                                     width: 300,
                                     height: 100,
                                   ),
-                                  imageUrl:
-                                      "https://image.tmdb.org/t/p/w500/${widget.searchResultList[index].backdropPath}",
-                                  width: 300,
-                                  height: 100,
-                                ),
-                              )),
-                          const Spacer(
-                            flex: 1,
-                          ),
-                          Expanded(
-                            flex: 6,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(
-                                    widget.searchResultList[index]
-                                            .originalTitle ??
-                                        '',
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                                Text(
-                                    widget.searchResultList[index]
-                                            .releaseDate ??
-                                        '',
-                                    style: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white)),
-                              ],
+                                )),
+                            const Spacer(
+                              flex: 1,
                             ),
-                          ),
-                          const Spacer(
-                            flex: 1,
-                          ),
-                        ],
-                      ),
-                      const Divider(
-                        indent: 20,
-                        endIndent: 20,
-                        thickness: 2,
-                        color: Color(0xff707070),
-                      )
-                    ],
+                            Expanded(
+                              flex: 6,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Text(
+                                      widget.searchResultList[index]
+                                              .originalTitle ??
+                                          '',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  Text(
+                                      widget.searchResultList[index]
+                                              .releaseDate ??
+                                          '',
+                                      style: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white)),
+                                ],
+                              ),
+                            ),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                          ],
+                        ),
+                        const Divider(
+                          indent: 20,
+                          endIndent: 20,
+                          thickness: 2,
+                          color: Color(0xff707070),
+                        )
+                      ],
+                    ),
                   );
                 }));
   }

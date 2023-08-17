@@ -17,12 +17,8 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
-
-  TextEditingController emailController =
-      TextEditingController(text: 'yousefahmed@gmail.com');
-
-  TextEditingController passwordController =
-      TextEditingController(text: 'yousefahmedkamel137');
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +27,7 @@ class _SignInState extends State<SignIn> {
       child: Scaffold(
           backgroundColor: AppColors.primaryColor,
           body: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.height * 0.02),
+            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.height * 0.02),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -96,7 +91,8 @@ class _SignInState extends State<SignIn> {
     if (_formKey.currentState?.validate() == false) {
       return;
     }
-    await widget.viewModel.signIn(emailController.text, passwordController.text);
+    await widget.viewModel
+        .signIn(emailController.text, passwordController.text);
   }
 
   String? validateEmailTextField(String value) {

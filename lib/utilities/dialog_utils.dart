@@ -63,7 +63,7 @@ class DialogUtils {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child:  Text(
+                        child: Text(
                           "try again",
                           style: TextStyle(
                               fontSize: 18,

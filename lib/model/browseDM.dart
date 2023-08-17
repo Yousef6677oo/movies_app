@@ -1,5 +1,6 @@
-class BrowseDM{
+class BrowseDM {
   String categoryName;
   String genreID;
-  BrowseDM(this.categoryName,this.genreID);
+
+  BrowseDM(this.categoryName, this.genreID);
 }

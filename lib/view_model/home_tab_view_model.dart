@@ -4,7 +4,7 @@ import 'package:movies/model/PopularResponseDM.dart';
 
 class HomeTapViewModel extends Cubit<HomeTabState> {
   HomeTapViewModel() : super(HomeTabLoadState()) {
-     getAllMovies();
+    getAllMovies();
   }
 
   getAllMovies() async {

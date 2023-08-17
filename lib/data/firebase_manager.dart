@@ -1,35 +1,42 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-abstract class FireBaseManager{
-  static Future<void> signUpFireBase(String fullName,String mobileNumber,String email,String password) async {
+import '../custom_exception/internet_exception/no_internet.dart';
+import '../custom_exception/sign_in_exceptions/user_not_found.dart';
+import '../custom_exception/sign_in_exceptions/wrong_password.dart';
+import '../custom_exception/sign_up_exceptions/email_already_in_use.dart';
+import '../custom_exception/sign_up_exceptions/weak_password.dart';
+
+abstract class FireBaseManager {
+  static Future<void> signIn(String email, String password) async {
     try {
-      var credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      print("enter home page successfully");
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        throw Exception(e.code);
-      } else if (e.code == 'email-already-in-use') {
-        throw Exception("email is already in use");
+      if (!await InternetConnectionChecker().hasConnection) {
+        throw NoInternet();
       }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-  static Future<void> signIn(String email,String password) async {
-    try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password
-      );
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        throw Exception(e.message);
+        throw UserNotFound();
       } else if (e.code == 'wrong-password') {
-        throw Exception('Wrong password provided for that user.');
+        throw WrongPassword();
+      }
+    }
+  }
+
+  static Future<void> signUpFireBase(String fullName, String mobileNumber,
+      String email, String password) async {
+    try {
+      if (!await InternetConnectionChecker().hasConnection) {
+        throw NoInternet();
+      }
+      var credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        throw WeakPassword();
+      } else if (e.code == 'email-already-in-use') {
+        throw EmailAlreadyInUse();
       }
     }
   }

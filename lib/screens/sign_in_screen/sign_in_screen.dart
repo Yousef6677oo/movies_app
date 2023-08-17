@@ -16,19 +16,19 @@ class SignInScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: BlocConsumer<SignInViewModel, SignInViewState>(
           bloc: signInViewModel,
-          listener: (context,state){
-            if(state is SignInSuccessState){
+          listener: (context, state) {
+            if (state is SignInSuccessState) {
               Navigator.pushReplacementNamed(context, InitialScreen.routeName);
             }
-            if(state is SignInErrorState){
+            if (state is SignInErrorState) {
               DialogUtils.showMessageDialog(context, state.errorMsg);
             }
-            if(state is SignInLoadState){
+            if (state is SignInLoadState) {
               DialogUtils.loadingDialog(context);
             }
           },
           listenWhen: (previous, current) {
-            if(previous is SignInLoadState){
+            if (previous is SignInLoadState) {
               DialogUtils.hideDialog(context);
             }
             if (current is SignInInitState ||
