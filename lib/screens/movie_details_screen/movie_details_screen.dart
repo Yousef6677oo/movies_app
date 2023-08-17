@@ -16,7 +16,7 @@ class MovieDetailsScreen extends StatelessWidget {
         MovieDetailsViewModel(args.id);
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: BlocBuilder<MovieDetailsViewModel, MovieDetailsState>(
+      body: BlocBuilder<MovieDetailsViewModel, MovieDetailsViewState>(
         bloc: movieDetailsViewModel,
         builder: (context, state) {
           if (state is MovieDetailsLoadState) {
@@ -26,7 +26,7 @@ class MovieDetailsScreen extends StatelessWidget {
             ));
           }
           if (state is MovieDetailsSuccessState) {
-            return MovieDetails(args, state.similarResponseList);
+            return MovieDetails(args, state.similarResponseList, state.genreList);
           }
           return Container();
         },

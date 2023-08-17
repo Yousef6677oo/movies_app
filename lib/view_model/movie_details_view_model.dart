@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/data/api_manager.dart';
 
+import '../model/DetailsResponseDM.dart';
 import '../model/SimilarResponseDM.dart';
 
-class MovieDetailsViewModel extends Cubit<MovieDetailsState> {
+class MovieDetailsViewModel extends Cubit<MovieDetailsViewState> {
   int genreID;
 
   MovieDetailsViewModel(this.genreID) : super(MovieDetailsLoadState()) {
@@ -11,21 +12,29 @@ class MovieDetailsViewModel extends Cubit<MovieDetailsState> {
   }
 
   getAllDiscover() async {
+    emit(MovieDetailsLoadState());
     SimilarDM similarResponse = await ApiManager.getSimilar(genreID);
     List<Result> similarResponseList = similarResponse.results!;
-
-    emit(MovieDetailsSuccessState(similarResponseList));
+    DetailsDM categories = await ApiManager.getDetails(genreID);
+    List<String> genres = [];
+    categories.genres?.forEach((element) {
+      genres.add(element.name ?? '');
+    });
+    emit(MovieDetailsSuccessState(similarResponseList, genres));
   }
 }
 
-abstract class MovieDetailsState {}
+abstract class MovieDetailsViewState {}
 
-class MovieDetailsLoadState extends MovieDetailsState {}
+class InitState  extends MovieDetailsViewState{}
 
-class MovieDetailsErrorState extends MovieDetailsState {}
+class MovieDetailsLoadState extends MovieDetailsViewState {}
 
-class MovieDetailsSuccessState extends MovieDetailsState {
+class MovieDetailsErrorState extends MovieDetailsViewState {}
+
+class MovieDetailsSuccessState extends MovieDetailsViewState {
   List<Result> similarResponseList;
+  List<String> genreList;
 
-  MovieDetailsSuccessState(this.similarResponseList);
+  MovieDetailsSuccessState(this.similarResponseList, this.genreList);
 }

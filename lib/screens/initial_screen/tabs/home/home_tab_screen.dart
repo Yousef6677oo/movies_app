@@ -10,7 +10,7 @@ class HomeTabScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: BlocBuilder<HomeTapViewModel,HomeTabState>(
+      body: BlocBuilder<HomeTapViewModel, HomeTabState>(
         bloc: homeTapViewModel,
         builder: (context, state) {
           if (state is HomeTabLoadState) {

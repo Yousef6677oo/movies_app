@@ -95,7 +95,7 @@ class _BrowseSpecificCategoryState extends State<BrowseSpecificCategory> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: Text(
-                      "  ${widget.browseList[index].title ?? " "}",
+                      "  ${widget.browseList[index].title ?? ""}",
                       style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,

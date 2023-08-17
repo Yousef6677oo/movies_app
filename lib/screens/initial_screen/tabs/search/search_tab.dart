@@ -38,8 +38,8 @@ class _SearchTabState extends State<SearchTab> {
           automaticallyImplyLeading: false,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(50),
-              )),
+            bottom: Radius.circular(50),
+          )),
         ),
         body: widget.searchResultList.isEmpty
             ? buildNotFoundNews()

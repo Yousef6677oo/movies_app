@@ -183,7 +183,8 @@ class _HomeTabState extends State<HomeTab> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
                                   child: CachedNetworkImage(
-                                    imageUrl: "https://image.tmdb.org/t/p/w500/${recommendedData[index].posterPath}",
+                                    imageUrl:
+                                        "https://image.tmdb.org/t/p/w500/${recommendedData[index].posterPath}",
                                     fit: BoxFit.fill,
                                     height: MediaQuery.of(context).size.height *
                                         0.17,
@@ -236,7 +237,7 @@ class _HomeTabState extends State<HomeTab> {
                                   ),
                                 ),
                                 Text(
-                                  recommendedData[index].releaseDate,
+                                  recommendedData[index].releaseDate.split('-').first,
                                   style:
                                       const TextStyle(color: Color(0xffB5B4B4)),
                                 )
@@ -313,13 +314,14 @@ class _HomeTabState extends State<HomeTab> {
                     top: MediaQuery.of(context).size.height * 0.26,
                     right: MediaQuery.of(context).size.width * 0.03,
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width*0.6,
+                      width: MediaQuery.of(context).size.width * 0.6,
                       child: Text(
                         e.title,
                         style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xffFFFFFF),overflow: TextOverflow.visible),
+                            color: Color(0xffFFFFFF),
+                            overflow: TextOverflow.visible),
                       ),
                     )),
                 Positioned(

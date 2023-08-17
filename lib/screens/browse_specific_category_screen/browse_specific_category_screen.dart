@@ -28,7 +28,8 @@ class BrowseSpecificCategoryScreen extends StatelessWidget {
             ));
           }
           if (state is BrowseSpecificCategorySuccessState) {
-            return BrowseSpecificCategory(state.genreResponseList,args.categoryName);
+            return BrowseSpecificCategory(
+                state.genreResponseList, args.categoryName);
           }
           return Container();
         },
