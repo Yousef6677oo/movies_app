@@ -8,8 +8,7 @@ import '../data/firebase_manager.dart';
 class SignUpViewModel extends Cubit<SignUpViewState> {
   SignUpViewModel() : super(SignUpInitState());
 
-  Future<void> signUp(String fullName, String mobileNumber, String email,
-      String password) async {
+  Future<void> signUp(String fullName, String mobileNumber, String email,String password) async {
     emit(SignUpLoadState());
     try {
       await FireBaseManager.signUpFireBase(fullName, mobileNumber, email, password);

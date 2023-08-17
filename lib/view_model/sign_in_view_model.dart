@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/custom_exception/internet_exception/no_internet.dart';
 import 'package:movies/data/firebase_manager.dart';
@@ -13,7 +11,7 @@ class SignInViewModel extends Cubit<SignInViewState> {
   signIn(String email, String password) async {
     emit(SignInLoadState());
     try {
-      await FireBaseManager.signIn(email, password);
+      await FireBaseManager.signInFireBase(email, password);
       emit(SignInSuccessState());
     } catch (exception) {
       if (exception is UserNotFound) {
